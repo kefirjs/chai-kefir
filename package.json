@@ -5,8 +5,13 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "babel src -d dist",
+    "prepublish": "npm run build",
     "test": "nyc mocha"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/mAAdhaTTah/chai-kefir.git"
