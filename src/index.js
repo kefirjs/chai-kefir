@@ -1,10 +1,9 @@
 import Kefir from 'kefir';
 import deepEql from 'deep-eql';
 import lolex from 'lolex';
-import { expect } from 'chai';
 
 export const send = (obs, events) => {
-    for (let event of events) {
+    for (const event of events) {
         if (event === '<end>') {
             obs._emitEnd();
         }
@@ -17,8 +16,7 @@ export const send = (obs, events) => {
     return obs;
 };
 
-const _activateHelper = () => {
-};
+const _activateHelper = () => {};
 
 export const activate = obs => {
     obs.onEnd(_activateHelper);
@@ -98,23 +96,6 @@ export const withFakeTime = (cb, reverseSimultaneous = false) => {
     clock.uninstall();
 };
 
-// see:
-//   https://github.com/rpominov/kefir/issues/134
-//   https://github.com/rpominov/kefir/pull/135
-export const shakyTimeTest = testCb => {
-    it('[shaky time test: normal run]', () => {
-        const expectToEmitOverShakyTime = (stream, expected, cb, timeLimit) =>
-            expect(stream).to.emitInTime(expected, cb, timeLimit);
-        testCb(expectToEmitOverShakyTime);
-    });
-
-    it('[shaky time test: reverse run]', () => {
-        const expectToEmitOverShakyTime = (stream, expected, cb, timeLimit) =>
-            expect(stream).to.emitInTime(expected, cb, timeLimit, true);
-        testCb(expectToEmitOverShakyTime);
-    });
-};
-
 const logItem = (event, isCurrent) => {
     if (event.type === 'value') {
         if (isCurrent) {
@@ -141,9 +122,9 @@ const noop = () => {};
 
 export const watch = obs => {
     const log = [];
+    let isCurrent = true;
     const fn = event => log.push(logItem(event, isCurrent));
     const unwatch = () => obs.offAny(fn);
-    let isCurrent = true;
     obs.onAny(fn);
     isCurrent = false;
     return { log, unwatch };
@@ -274,7 +255,7 @@ export default ({ Assertion }, utils) => {
                 `Expected to emit ${utils.objDisplay(expected)}, actually emitted ${utils.objDisplay(log)}`,
                 `Expected to not emit ${utils.objDisplay(expected)}, actually emitted ${utils.objDisplay(log)}`
             );
-    });
+        });
 
     Assertion.addMethod('flowErrors', function emitMethod (source = utils.getActual(this, arguments)) {
         const actual = utils.getActual(this, arguments);

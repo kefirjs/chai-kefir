@@ -1,5 +1,6 @@
+/* eslint-env mocha */
 import { AssertionError, expect, use } from 'chai';
-import chaiKefir, { activate, send, stream, prop, pool, shakyTimeTest } from '../src';
+import chaiKefir, { activate, send, stream, prop, pool } from '../src';
 
 use(chaiKefir);
 
@@ -231,18 +232,6 @@ describe('chai-kefir', () => {
 
                 expect(a.ignoreErrors()).to.flowErrors(a);
             }).to.throw(AssertionError);
-        });
-    });
-
-    describe('shakyTimeTest', () => {
-        shakyTimeTest(expect => {
-            const a = stream();
-
-            expect(a.delay(10), [[10, 1], [10, 2], [20, 3], [20, 4], [20, 5]], tick => {
-                send(a, [1, 2]);
-                tick(10);
-                send(a, [3, 4, 5]);
-            });
         });
     });
 });
