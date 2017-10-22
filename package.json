@@ -17,7 +17,10 @@
     "url": "git+ssh://git@github.com/mAAdhaTTah/chai-kefir.git"
   },
   "keywords": [
-    "Kefir"
+    "kefir",
+    "browser",
+    "chai",
+    "chai-plugin"
   ],
   "author": "James DiGioia <jamesorodig@gmail.com> (http://jamesdigioia.com)",
   "license": "MIT",
