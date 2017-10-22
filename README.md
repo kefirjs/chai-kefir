@@ -2,6 +2,10 @@
 
 Chai plugin for asserting on Kefir Observables.
 
+[![Build Status](https://travis-ci.org/mAAdhaTTah/chai-kefir.svg?branch=master)](https://travis-ci.org/mAAdhaTTah/chai-kefir)
+
+---
+
 ## How to Install
 
 Install with npm:
