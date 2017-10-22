@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "babel src -d dist",
-    "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
     "test": "nyc mocha"
   },
   "files": [
@@ -32,15 +32,13 @@
     "chai": "^4.1.2",
     "deep-eql": "^3.0.1",
     "kefir": "^3.7.4",
-    "lolex": "^2.1.3",
-    "sinon": "^4.0.1"
+    "lolex": "^2.1.3"
   },
   "devDependencies": {
     "@std/esm": "^0.12.1",
     "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-register": "^6.26.0",
-    "just-extend": "1.1.22",
     "mocha": "^4.0.1",
     "nyc": "^11.2.1"
   },
