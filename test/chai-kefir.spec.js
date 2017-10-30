@@ -1,6 +1,6 @@
 /* eslint-env mocha */
-import { AssertionError, expect, use } from 'chai';
-import chaiKefir, { activate, send, stream, prop, pool } from '../src';
+const { AssertionError, expect, use } = require('chai');
+const { default: chaiKefir, activate, send, stream, prop, pool } = require('../src');
 
 use(chaiKefir);
 
