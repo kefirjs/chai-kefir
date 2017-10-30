@@ -84,7 +84,7 @@ const shakeTimers = clock => {
     });
 };
 
-export const withFakeTime = (cb, reverseSimultaneous = false) => {
+const withFakeTime = (cb, reverseSimultaneous = false) => {
     const clock = lolex.install();
     const tick = t => {
         if (reverseSimultaneous) {
