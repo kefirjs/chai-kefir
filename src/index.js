@@ -1,20 +1,50 @@
 import deepEql from 'deep-eql';
 import lolex from 'lolex';
 
+const END = 'end';
+const VALUE = 'value';
+const ERROR = 'error';
+
+const CHECK_OBS = 'CHECK_OBS';
+const CHECK_PROP = 'CHECK_PROP';
+const CHECK_STREAM = 'CHECK_STREAM';
+const CHECK_POOL = 'CHECK_POOL';
+const CHECK_ACTIVE = 'CHECK_ACTIVE';
+
 export default Kefir => {
     const send = (obs, events) => {
         for (const event of events) {
-            if (event === '<end>') {
-                obs._emitEnd();
-            }
-            if (typeof event === 'object' && 'error' in event) {
-                obs._emitError(event.error);
-            } else {
-                obs._emitValue(event);
+            switch (event.type) {
+                case VALUE:
+                    obs._emitValue(event.value);
+                    break;
+                case ERROR:
+                    obs._emitError(event.value);
+                    break;
+                case END:
+                    obs._emitEnd();
+                    break;
             }
         }
         return obs;
     };
+
+    const value = (val, { current = false } = {}) => ({
+        type: VALUE,
+        value: val,
+        current
+    });
+
+    const error = (err, { current = false } = {}) => ({
+        type: ERROR,
+        value: err,
+        current
+    });
+
+    const end = ({ current = false } = {}) => ({
+        type: END,
+        current
+    });
 
     const _activateHelper = () => {};
 
@@ -96,25 +126,14 @@ export default Kefir => {
         clock.uninstall();
     };
 
-    const logItem = (event, isCurrent) => {
-        if (event.type === 'value') {
-            if (isCurrent) {
-                return { current: event.value };
-            } else {
-                return event.value;
-            }
-        } else if (event.type === 'error') {
-            if (isCurrent) {
-                return { currentError: event.value };
-            } else {
-                return { error: event.value };
-            }
-        } else {
-            if (isCurrent) {
-                return '<end:current>';
-            } else {
-                return '<end>';
-            }
+    const logItem = (event, current) => {
+        switch (event.type) {
+            case VALUE:
+                return value(event.value, { current });
+            case ERROR:
+                return error(event.value, { current });
+            case END:
+                return end({ current });
         }
     };
 
@@ -138,12 +157,6 @@ export default Kefir => {
         isCurrent = false;
         return log;
     };
-
-    const CHECK_OBS = 'CHECK_OBS';
-    const CHECK_PROP = 'CHECK_PROP';
-    const CHECK_STREAM = 'CHECK_STREAM';
-    const CHECK_POOL = 'CHECK_POOL';
-    const CHECK_ACTIVE = 'CHECK_ACTIVE';
 
     const plugin = ({ Assertion }, utils) => {
         Assertion.addChainableMethod('observable', function observableMethod () {
@@ -259,16 +272,16 @@ export default Kefir => {
 
         Assertion.addMethod('flowErrors', function emitMethod (source = utils.getActual(this, arguments)) {
             const actual = utils.getActual(this, arguments);
-            const expected = [{ error: -2 }, { error: -3 }];
+            const expected = [error(-2), error(-3)];
 
             if (actual instanceof Kefir.Property) {
                 activate(actual);
-                send(source, [{ error: -1 }]);
+                send(source, [error(-1)]);
                 deactivate(actual);
-                expected.unshift({ currentError: -1 });
+                expected.unshift(error(-1, { current: true }));
             }
             const { log, unwatch } = watch(actual);
-            send(source, [{ error: -2 }, { error: -3 }]);
+            send(source, [error(-2), error(-3)]);
             unwatch();
 
             this.assert(
@@ -279,5 +292,5 @@ export default Kefir => {
         });
     };
 
-    return { plugin, activate, send, stream, prop, pool };
+    return { plugin, activate, send, value, error, end, stream, prop, pool };
 };

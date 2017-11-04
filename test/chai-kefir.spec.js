@@ -1,9 +1,10 @@
 /* eslint-env mocha */
-import { AssertionError, expect, use } from 'chai';
+import { config, AssertionError, expect, use } from 'chai';
 import Kefir from 'kefir';
 import chaiKefir from '../src';
 
-const { plugin, activate, send, stream, prop, pool } = chaiKefir(Kefir);
+config.truncateThreshold = false;
+const { plugin, activate, send, stream, prop, pool, value, error, end } = chaiKefir(Kefir);
 use(plugin);
 
 describe('chai-kefir', () => {
@@ -106,55 +107,55 @@ describe('chai-kefir', () => {
     describe('emit', () => {
         it('should match on stream event', () => {
             const a = stream();
-            expect(a).to.emit([1], () => {
-                send(a, [1]);
+            expect(a).to.emit([value(1)], () => {
+                send(a, [value(1)]);
             });
         });
 
         it('should match on stream error', () => {
             const a = stream();
-            expect(a).to.emit([{ error: 1 }], () => {
-                send(a, [{ error: 1 }]);
+            expect(a).to.emit([error(1)], () => {
+                send(a, [error(1)]);
             });
         });
 
         it('should match on stream end', () => {
             const a = stream();
-            expect(a).to.emit(['<end>'], () => {
-                send(a, ['<end>']);
+            expect(a).to.emit([end()], () => {
+                send(a, [end()]);
             });
         });
 
         it('should match events when stream is active', () => {
             const a = stream();
-            expect(a).to.emit(['<end>'], () => {
-                send(a, ['<end>', 1]);
+            expect(a).to.emit([end()], () => {
+                send(a, [end(), 1]);
             });
         });
 
         it('should match current event', () => {
             const a = prop();
-            send(a, [1]);
-            expect(a).to.emit([{ current: 1 }]);
+            send(a, [value(1)]);
+            expect(a).to.emit([value(1, { current: true })]);
         });
 
         it('should match current end', () => {
             const a = prop();
-            send(a, ['<end>']);
-            expect(a).to.emit(['<end:current>']);
+            send(a, [end()]);
+            expect(a).to.emit([end({ current: true })]);
         });
 
         it('should not match when stream emits too many events', () => {
             const a = stream();
-            expect(a).to.not.emit([1, '<end>'], () => {
-                send(a, [1, 2, '<end>']);
+            expect(a).to.not.emit([1, end()], () => {
+                send(a, [1, 2, end()]);
             });
         });
 
         it('should not match when stream emits too few events', () => {
             const a = stream();
-            expect(a).to.not.emit([1, '<end>'], () => {
-                send(a, ['<end>']);
+            expect(a).to.not.emit([1, end()], () => {
+                send(a, [end()]);
             });
         });
     });
@@ -162,19 +163,19 @@ describe('chai-kefir', () => {
     describe('emitInTime', () => {
         it('should emit into stream over time', () => {
             const a = stream();
-            expect(a.delay(10)).to.emitInTime([[10, 1], [10, 2], [20, 3]], tick => {
-                send(a, [1, 2]);
+            expect(a.delay(10)).to.emitInTime([[10, value(1)], [10, value(2)], [20, value(3)]], tick => {
+                send(a, [value(1), value(2)]);
                 tick(10);
-                send(a, [3]);
+                send(a, [value(3)]);
             });
         });
 
         it('should emit into stream over time in reverse', () => {
             const a = stream();
-            expect(a.delay(10)).to.emitInTime([[10, 1], [10, 2], [20, 3], [20, 4], [20, 5]], tick => {
-                send(a, [1, 2]);
+            expect(a.delay(10)).to.emitInTime([[10, value(1)], [10, value(2)], [20, value(3)], [20, value(4)], [20, value(5)]], tick => {
+                send(a, [value(1), value(2)]);
                 tick(10);
-                send(a, [3, 4, 5]);
+                send(a, [value(3), value(4), value(5)]);
             }, { reverseSimultaneous: true });
         });
     });
