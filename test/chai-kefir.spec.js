@@ -143,7 +143,7 @@ describe('chai-kefir', () => {
         it('should match events when stream is active', () => {
             const a = stream();
             expect(a).to.emit([end()], () => {
-                send(a, [end(), 1]);
+                send(a, [end(), value(1)]);
             });
         });
 
@@ -161,8 +161,8 @@ describe('chai-kefir', () => {
 
         it('should not match when stream emits too many events', () => {
             const a = stream();
-            expect(a).to.not.emit([1, end()], () => {
-                send(a, [1, 2, end()]);
+            expect(a).to.not.emit([value(1), end()], () => {
+                send(a, [value(1), value(2), end()]);
             });
         });
 

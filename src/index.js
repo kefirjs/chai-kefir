@@ -24,6 +24,8 @@ export default Kefir => {
                 case END:
                     obs._emitEnd();
                     break;
+                default:
+                    throw new TypeError(`chai-kefir :: send :: Expected event object, received ${typeof event}`);
             }
         }
         return obs;
