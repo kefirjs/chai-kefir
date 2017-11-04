@@ -1,8 +1,10 @@
 /* eslint-env mocha */
-const { AssertionError, expect, use } = require('chai');
-const { default: chaiKefir, activate, send, stream, prop, pool } = require('../src');
+import { AssertionError, expect, use } from 'chai';
+import Kefir from 'kefir';
+import chaiKefir from '../src';
 
-use(chaiKefir);
+const { plugin, activate, send, stream, prop, pool } = chaiKefir(Kefir);
+use(plugin);
 
 describe('chai-kefir', () => {
     describe('observable', () => {
