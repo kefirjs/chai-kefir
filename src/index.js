@@ -115,7 +115,7 @@ export default Kefir => {
     };
 
     const withFakeTime = (cb, reverseSimultaneous = false) => {
-        const clock = lolex.install();
+        const clock = lolex.install({ now: 1000 });
         const tick = t => {
             if (reverseSimultaneous) {
                 shakeTimers(clock);
