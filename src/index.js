@@ -292,5 +292,5 @@ export default Kefir => {
         });
     };
 
-    return { plugin, activate, send, value, error, end, stream, prop, pool };
+    return { plugin, activate, deactivate, send, value, error, end, stream, prop, pool };
 };

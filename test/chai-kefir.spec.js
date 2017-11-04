@@ -4,7 +4,7 @@ import Kefir from 'kefir';
 import chaiKefir from '../src';
 
 config.truncateThreshold = false;
-const { plugin, activate, send, stream, prop, pool, value, error, end } = chaiKefir(Kefir);
+const { plugin, activate, deactivate, send, value, error, end, stream, prop, pool } = chaiKefir(Kefir);
 use(plugin);
 
 describe('chai-kefir', () => {
@@ -81,6 +81,13 @@ describe('chai-kefir', () => {
             expect(stream()).to.not.be.active.observable.stream();
         });
 
+        it('should negate on activated and deactivated stream', () => {
+            const a = stream();
+            activate(a);
+            deactivate(a);
+            expect(a).to.not.be.active.observable.stream();
+        });
+
         it('should match on active stream', () => {
             const a = stream();
             activate(a);
@@ -101,6 +108,13 @@ describe('chai-kefir', () => {
             const a = prop();
             activate(a);
             expect(a).to.be.active.observable.property();
+        });
+
+        it('should negate on activated and deactivated stream', () => {
+            const a = prop();
+            activate(a);
+            deactivate(a);
+            expect(a).to.not.be.active.observable.property();
         });
     });
 
