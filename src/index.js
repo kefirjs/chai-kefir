@@ -259,9 +259,9 @@ export default Kefir => {
                 let log = null;
                 const actual = utils.getActual(this, arguments);
 
-                withFakeTime(tick => {
+                withFakeTime((tick, clock) => {
                     log = watchWithTime(actual);
-                    cb(tick);
+                    cb(tick, clock);
                     tick(timeLimit);
                 }, reverseSimultaneous);
 
@@ -272,7 +272,7 @@ export default Kefir => {
                 );
             });
 
-        Assertion.addMethod('flowErrors', function emitMethod (source = utils.getActual(this, arguments)) {
+        Assertion.addMethod('flowErrors', function flowErrorsMethod (source = utils.getActual(this, arguments)) {
             const actual = utils.getActual(this, arguments);
             const expected = [error(-2), error(-3)];
 

@@ -192,6 +192,14 @@ describe('chai-kefir', () => {
                 send(a, [value(3), value(4), value(5)]);
             }, { reverseSimultaneous: true });
         });
+
+        it('should pass clock to callback', () => {
+            const a = stream();
+            expect(a.delay(10)).to.emitInTime([[10, value(1)]], (tick, clock) => {
+                send(a, [value(1)]);
+                clock.runToLast();
+            });
+        });
     });
 
     describe('errorToFlow', () => {
