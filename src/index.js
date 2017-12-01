@@ -249,8 +249,10 @@ export default Kefir => {
 
             this.assert(
                 deepEql(log, expected),
-                `Expected to emit ${utils.objDisplay(expected)}, actually emitted ${utils.objDisplay(log)}`,
-                `Expected to not emit ${utils.objDisplay(expected)}, actually emitted ${utils.objDisplay(log)}`
+                `Expected to emit #{exp}, actually emitted #{act}`,
+                `Expected to not emit #{exp}, actually emitted #{act}`,
+                expected,
+                log
             );
         });
 
@@ -267,8 +269,10 @@ export default Kefir => {
 
                 this.assert(
                     deepEql(log, expected),
-                    `Expected to emit ${utils.objDisplay(expected)}, actually emitted ${utils.objDisplay(log)}`,
-                    `Expected to not emit ${utils.objDisplay(expected)}, actually emitted ${utils.objDisplay(log)}`
+                    `Expected to emit #{exp}, actually emitted #{act}`,
+                    `Expected to not emit #{exp}, actually emitted #{act}`,
+                    expected,
+                    log
                 );
             });
 
@@ -288,8 +292,10 @@ export default Kefir => {
 
             this.assert(
                 deepEql(log, expected),
-                `Expected errors to flow (i.e. to emit ${utils.objDisplay(expected)}, actually emitted ${utils.objDisplay(log)})`,
-                `Expected errors not to flow (i.e. to emit [], actually emitted ${utils.objDisplay(log)})`
+                `Expected errors to flow (i.e. to emit #{exp}, actually emitted #{act})`,
+                `Expected errors not to flow (i.e. to emit [], actually emitted #{act})`,
+                expected,
+                log
             );
         });
     };
