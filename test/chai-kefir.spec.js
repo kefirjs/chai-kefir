@@ -200,6 +200,21 @@ describe('chai-kefir', () => {
                 clock.runToLast();
             });
         });
+
+        it('should uninstall clock if callback throws', () => {
+            const a = stream();
+            const origSetTimeout = setTimeout;
+            const err = new Error('sucks to be you!');
+            try {
+                expect(a).to.emitInTime([], () => {
+                    throw err;
+                });
+            } catch (e) {
+                expect(e).to.equal(err);
+            } finally {
+                expect(origSetTimeout).to.equal(setTimeout);
+            }
+        });
     });
 
     describe('errorToFlow', () => {

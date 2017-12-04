@@ -124,8 +124,18 @@ export default Kefir => {
             }
             clock.tick(t);
         };
-        cb(tick, clock);
-        clock.uninstall();
+        let error = null;
+        try {
+            cb(tick, clock);
+        } catch (e) {
+            error = e;
+        } finally {
+            clock.uninstall();
+
+            if (error) {
+                throw error;
+            }
+        }
     };
 
     const logItem = (event, current) => {
