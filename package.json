@@ -39,13 +39,14 @@
     "kefir": "^3.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-register": "^6.26.0",
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.0.1",
+    "@babel/register": "^7.0.0",
     "chai": "^4.0.0",
     "kefir": "^3.8.0",
     "mocha": "^4.0.1",
-    "nyc": "^11.3.0",
+    "nyc": "^13.1.0",
     "prettier": "^1.15.2"
   }
 }
