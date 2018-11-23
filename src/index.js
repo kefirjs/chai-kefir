@@ -1,5 +1,5 @@
 import deepEql from 'deep-eql'
-import createTestHelpers from './util'
+import createTestHelpers from 'kefir-test-utils'
 
 const CHECK_OBS = 'CHECK_OBS'
 const CHECK_PROP = 'CHECK_PROP'
