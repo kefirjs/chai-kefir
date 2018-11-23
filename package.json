@@ -6,9 +6,9 @@
   "scripts": {
     "build": "babel src -d dist",
     "prepublishOnly": "npm test && npm run build",
-    "test": "npm run build && npm run test:lint && npm run test:unit",
+    "test": "npm run build && npm run test:fmt && npm run test:unit",
     "test:unit": "nyc mocha",
-    "test:lint": "eslint src --cache true --fix"
+    "test:fmt": "prettier src/*.js test/*.js --write"
   },
   "files": [
     "dist",
@@ -43,10 +43,9 @@
     "babel-preset-env": "^1.6.1",
     "babel-register": "^6.26.0",
     "chai": "^4.0.0",
-    "eslint": "^4.10.0",
-    "eslint-config-valtech": "^1.1.0",
     "kefir": "^3.8.0",
     "mocha": "^4.0.1",
-    "nyc": "^11.3.0"
+    "nyc": "^11.3.0",
+    "prettier": "^1.15.2"
   }
 }
