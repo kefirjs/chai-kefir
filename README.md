@@ -6,7 +6,7 @@ Chai plugin for asserting on Kefir Observables.
 
 ---
 
-## How to Install
+## How to Use
 
 Install with npm:
 
@@ -14,20 +14,7 @@ Install with npm:
 npm i --save-dev chai-kefir
 ```
 
-Then register the plugin with chai in your test files:
-
-```js
-import chaiKefir from 'chai-kefir';
-import { use } from 'chai';
-
-use(chaiKefir);
-```
-
-Now the `chai-kefir` assertions are available on the chai Assertion.
-
-## How to Use
-
-At the top of your tests, import `chai-kefir` and `kefir and register Kefir:
+At the top of your tests, import `chai-kefir` and `kefir` and register Kefir:
 
 ```js
 import Kefir from 'kefir';
@@ -96,7 +83,7 @@ When passing to `send`, the `options` object is ignored. `options` is used by `e
 
 ### `observable`
 
-Asserts whether the expected value is a `Kefir.Observable`. For the other assertions, we recommend chaining off `observable`. `property` below requires it; the rest should for consistency. 
+Asserts whether the expected value is a `Kefir.Observable`. For the other assertions, we recommend chaining off `observable`. `property` below requires it; the rest should for consistency.
 
 ```js
 expect(obs).to.be.an.observable();
@@ -116,7 +103,7 @@ Asserts whether the expected value is a `Kefir.Stream`.
 
 ```js
 expect(obs).to.be.an.observable.stream();
-``` 
+```
 
 ### `pool`
 
